@@ -5,8 +5,7 @@ from MOT.detectors.yolov8.yolov8_detector import YOLOv8Detector
 
 
 class Detector:
-    def __init__(self,
-                 use_cuda: bool = True):
+    def __init__(self, use_cuda):
         
         self.model = self._select_detector(use_cuda)
     def _select_detector(self, cuda):

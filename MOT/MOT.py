@@ -7,19 +7,19 @@ from loguru import logger
 import MOT.utils as utils
 from MOT.detectors.detector import Detector
 from MOT.trackers.tracker import Tracker
+from MOT.utils.default_cfg import config
 
 class MultiTracking:
     def __init__(self,
                  detector: int = 0,
                  tracker: int = -1,
-                 weights: str = None,
                  use_cuda: bool = False,
                  languages: list = ['en']
                  ) -> None:
         self.use_cuda = use_cuda
 
         # get detector object
-        self.detector = self.get_detector(detector, weights)
+        self.detector = self.get_detector(detector)
 
         if tracker == -1:
             self.tracker = None
@@ -27,15 +27,24 @@ class MultiTracking:
 
         self.tracker = self.get_tracker(tracker)
 
-    def get_detector(self, detector: int, weights: str):
-        detector = Detector(detector, weights=weights,
-                            use_cuda=self.use_cuda).get_detector()
+    def get_detector(self, detector: int):
+        detector = Detector(use_cuda=self.use_cuda).get_detector()
         return detector
     
     def get_tracker(self, tracker: int):
         tracker = Tracker(tracker, self.detector,
                           use_cuda=self.use_cuda)
         return tracker
+
+    def _update_args(self, kwargs):
+        for key, value in kwargs.items():
+            if key in config.keys():
+                config[key] = value
+            else:
+                print(
+                    f'"{key}" argument not found! valid args: {list(config.keys())}')
+                exit()
+        return config
 
     def track_video(self,
                     video_path,
@@ -58,13 +67,13 @@ class MultiTracking:
                 f'No tracker is selected. use detect() function perform detcetion or pass a tracker.')
             exit()
 
-        fps = config.pop('fps')
-        output_dir = config.pop('output_dir')
-        filename = config.pop('filename')
-        save_result = config.pop('save_result')
-        display = config.pop('display')
-        draw_trails = config.pop('draw_trails')
-        class_names = config.pop('class_names')
+        fps = config['fps']
+        output_dir = config['output_dir']
+        filename = config['filename']
+        save_result = config['save_result']
+        display = config['display']
+        draw_trails = config['draw_trails']
+        class_names = config['class_names']
 
         cap = cv2.VideoCapture(stream_path)
         width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)

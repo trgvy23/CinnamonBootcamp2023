@@ -39,21 +39,23 @@ def main():
 
     if video_path is not None:
         tracker = MOT.DEEPSORT
+    else:
+        tracker = -1
 
     detecting_object = MultiTracking(
         tracker=tracker,
         detector=MOT.YOLOV8,
-        weights=None,
         use_cuda=False
     )
 
-    track_action = detecting_object.track_video(video_path, confidence_threshold=confidence_threshold,
-                                                iou_threshold=0.5, 
+    track_action = detecting_object.track_video(video_path, 
+                                                conf_thres=confidence_threshold,
+                                                iou_thres=0.5, 
                                                 display=False,
-                                                draw_tail=False,
-                                                filtered_classes = tracking_class if tracking_class else None,
+                                                filter_classes=tracking_class if tracking_class else None,
+                                                draw_trails=False,
                                                 save_result=True,
-                                                class_name=False)
+                                                class_names=False)
     video_capture = cv2.VideoCapture(video_path)
     frame_width = int(video_capture.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -95,14 +97,14 @@ def main():
             x1, y1, x2, y2 = [int(coor) for coor in bbox]
             class_name = TRACKING_CLASSES[class_ids[i]]
             label = f"{class_name} {ids[i]}"
-            frame = cv2.Rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
+            frame = cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
             frame = cv2.putText(frame, label, (x1, y1-5), cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 255), 2)
 
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frame = Image.fromarray(frame)
         frame_placeholder.image(frame, width=800, output_format="PNG")
         end_time = time.time()
-        processing_time = start_time - end_time
+        processing_time = end_time - start_time
         actual_fps = int(1/processing_time)
         num_frame_placeholder.markdown(
             f'<p class="info">Frame number: {frame_num}</p>',

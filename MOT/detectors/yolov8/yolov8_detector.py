@@ -33,7 +33,14 @@ class YOLOv8Detector:
                max_det: int = 1000,
                filter_classes: bool = None,
                agnostic_nms: bool = True,
-               return_image=False
+               return_image=False,
+               display=False,
+               output_dir=None,
+               draw_trails=False,
+               class_names=None,
+               filename=None,
+               save_result=True,
+               fps=1
                ) -> list:
 
         # Preprocess input image and also copying original image for later use
