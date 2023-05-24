@@ -19,3 +19,7 @@ ultralytics
 motpy
 loguru
 # pip install opencv-python opencv-python-headless
+torch
+ultralytics
+easydict
+ipdb

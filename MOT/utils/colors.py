@@ -1,5 +1,5 @@
 from numpy import random
-from MOT.utils import get_names
+from MOT.utils.classes import get_names
 names = get_names()
 
 colors = [[random.randint(0, 255) for _ in range(3)]

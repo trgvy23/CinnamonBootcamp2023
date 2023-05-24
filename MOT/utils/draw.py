@@ -1,8 +1,8 @@
 import cv2
 from numpy import random
 import numpy as np
-from MOT.utils import compute_color_for_labels
-from MOT.utils import get_names
+from MOT.utils.colors import compute_color_for_labels
+from MOT.utils.classes import get_names
 from collections import deque
 
 names = get_names()

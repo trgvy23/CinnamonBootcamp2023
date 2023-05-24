@@ -5,6 +5,8 @@ import copy
 import numpy as np
 from loguru import logger
 import MOT.utils as utils
+from MOT.detectors.detector import Detector
+from MOT.trackers.tracker import Tracker
 
 class MultiTracking:
     def __init__(self,
@@ -12,14 +14,12 @@ class MultiTracking:
                  tracker: int = -1,
                  weights: str = None,
                  use_cuda: bool = False,
-                 recognizer: int = None,
                  languages: list = ['en']
                  ) -> None:
         self.use_cuda = use_cuda
 
         # get detector object
-        self.detector = self.get_detector(detector, weights, recognizer)
-        self.recognizer = self.get_recognizer(recognizer, languages=languages)
+        self.detector = self.get_detector(detector, weights)
 
         if tracker == -1:
             self.tracker = None
@@ -27,19 +27,11 @@ class MultiTracking:
 
         self.tracker = self.get_tracker(tracker)
 
-    def get_detector(self, detector: int, weights: str, recognizer):
+    def get_detector(self, detector: int, weights: str):
         detector = Detector(detector, weights=weights,
-                            use_cuda=self.use_cuda, recognizer=recognizer).get_detector()
+                            use_cuda=self.use_cuda).get_detector()
         return detector
-
-    def get_recognizer(self, recognizer: int, languages):
-        if recognizer == None:
-            return None
-        recognizer = TextRecognizer(recognizer,
-                                    use_cuda=self.use_cuda, languages=languages).get_recognizer()
-
-        return recognizer
-
+    
     def get_tracker(self, tracker: int):
         tracker = Tracker(tracker, self.detector,
                           use_cuda=self.use_cuda)
@@ -115,17 +107,12 @@ class MultiTracking:
                 'frame {}/{} ({:.2f} ms)'.format(frame_id, int(frame_count),
                                                  elapsed_time * 1000))
 
-            if self.recognizer:
-                res = self.recognizer.recognize(im0, horizontal_list=bboxes_xyxy,
-                                                free_list=[])
-                im0 = utils.draw_text(im0, res)
-            else:
-                im0 = utils.draw_boxes(im0,
-                                       bboxes_xyxy,
-                                       class_ids,
-                                       identities=ids,
-                                       draw_trails=draw_trails,
-                                       class_names=class_names)
+            im0 = utils.draw_boxes(im0,
+                                    bboxes_xyxy,
+                                    class_ids,
+                                    identities=ids,
+                                    draw_trails=draw_trails,
+                                    class_names=class_names)
 
             currTime = time.time()
             fps = 1 / (currTime - prevTime)
