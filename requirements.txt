@@ -21,3 +21,4 @@ loguru
 ultralytics
 easydict
 ipdb
+streamlit
