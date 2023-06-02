@@ -15,7 +15,20 @@ CinnamonBootcamp2023
 <img src="https://img.shields.io/badge/Markdown-000000.svg?style=for-the-badge&logo=Markdown&logoColor=white" alt="Markdown" />
 </p>
 
-## 🤖 Overview
+---
+
+## 📚 Table of Contents
+- [📚 Table of Contents](#-table-of-contents)
+- [📍Overview](#-overview)
+- [🔮 Prerequisites](#-prerequisites)
+- [🚀 Installation](#installation)
+- [💻 Usage](#-usage)
+- [⚙️ Project Structure](#%EF%B8%8F-project-structure)
+- [🙏 Acknowledgments](#-acknowledgments)
+
+---
+
+## 📍 Overview
 This is a Tracking System application that performs object tracking in videos using YOLOv8 for detection and DeepSort algorithm for tracking. It allows you to upload a video file, select the tracking classes, and adjust the confidence threshold for object detection.
 
 ![demo-gif](https://github.com/trgvy23/CinnamonBootcamp2023/blob/main/results.gif)
