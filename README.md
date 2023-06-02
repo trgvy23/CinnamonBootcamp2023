@@ -45,13 +45,40 @@ pip install typing-extensions --upgrade
 
 ## 💻 Usage
 
+### 🪄 GPU Setting
+
+If you want to run the application with Cuda, simply change the configuration in `MOT/utils/default_cfg.py`:
+
+```python
+from MOT.utils.classes import get_names
+
+names = get_names()
+
+config = {
+    "output_dir": "data/results",
+    "filename": None,
+    "fps": None,
+    "filter_classes": names,
+    "input_shape" : (640, 640),
+    "conf_thres": 0.25,
+    "iou_thres" : 0.45,
+    "max_det" : 1000,
+    "agnostic_nms" : False,
+    "use_conda": False,
+}
+```
+
+Change `use_conda` key from `False` to `True`. The default value is `False`
+
+### 👩‍💻 Running Multi Object Tracking
+
 To start the Tracking System, run the following command:
 
 ```
 streamlit run main.py
 ```
 
-Once the application is running, you can access it in your web browser at `http://localhost:8501`.
+Once the application is running, you can access it in your local web browser.
 
 1. Select the desired settings in the sidebar:
    - Adjust the confidence threshold using the slider.
@@ -60,7 +87,7 @@ Once the application is running, you can access it in your web browser at `http:
 
 2. The object tracking process will begin automatically.
 
-3. The dashboard will display the video frames with tracked objects overlaid on them.
+3. The dashboard will display the video frames with tracked objects being highlighted.
 
 4. The number of the current frame, the number of objects being tracked, and the frames per second (FPS) will be displayed in the text area below the video.
 
@@ -113,7 +140,8 @@ repo
 │   └── sample_vids
 ├── README.md
 ├── main.py
-└── requirements.txt
+├── requirements.txt
+└──results.gif
 ```
 
 ## 🙏 Acknowledgments
