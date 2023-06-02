@@ -7,6 +7,9 @@ import tempfile
 import os
 import numpy as np
 import time
+from MOT.utils.default_cfg import config
+
+USE_CONDA = config['use_conda']
 
 TRACKING_CLASSES = [
     # List of tracking classes
@@ -45,7 +48,7 @@ def main():
 
     detecting_object = MultiTracking(
         tracker=tracker,
-        use_cuda=False
+        use_cuda=USE_CONDA
     )
 
     # Start tracking the video with the specified configurations
