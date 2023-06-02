@@ -1,12 +1,12 @@
+from MOT.utils.classes import get_names
+
+names = get_names()
+
 config = {
-    "output_dir": "results",
+    "output_dir": "data/results",
     "filename": None,
     "fps": None,
-    "save_result": True,
-    "display": True,
-    "draw_trails": False,
-    "filter_classes": None,
-    "class_names": None,
+    "filter_classes": names,
     "input_shape" : (640, 640),
     "conf_thres": 0.25,
     "iou_thres" : 0.45,

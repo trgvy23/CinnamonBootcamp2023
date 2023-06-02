@@ -1,9 +1,7 @@
 from .MOT import MultiTracking
 import MOT.detectors
+import MOT.trackers
 
 DEEPSORT = 0
-BYTETRACK = 1
-NORFAIR = 2
-MOTPY = 3
 
-YOLOV8 = 0
+__all__ = ['MultiTracking', 'detectors', 'trackers'] 

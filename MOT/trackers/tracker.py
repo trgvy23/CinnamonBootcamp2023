@@ -1,34 +1,61 @@
-# from MOT.trackers import ByteTrack
-# from MOT.trackers import NorFair
 from MOT.trackers.deep_sort.deepsort import DeepSort
-# from MOT.trackers import Motpy
 
 class Tracker:
-    def __init__(self, tracker: int, detector: object, use_cuda=True) -> None:
-        
-        self.trackers = {
+    def __init__(self, tracker_type: int, object_detector: object, use_cuda=True):
+        """
+        Initializes the object tracker.
+
+        Args:
+            tracker_type (int): The type of object tracker to use.
+            object_detector: The object detection model used for detecting objects in images.
+            use_cuda (bool): Whether to use CUDA for GPU acceleration.
+        """
+        self.available_trackers = {
             '0': DeepSort,
-            # '1': ByteTrack,
-            # '2': NorFair,
-            # '3': Motpy
+            # '1': StrongSort,
         }
+        self.tracker = self._select_tracker(tracker_type, object_detector, use_cuda=use_cuda)
 
-        self.tracker = self._select_tracker(tracker, detector, use_cuda=use_cuda)
+    def _select_tracker(self, tracker_type, object_detector, use_cuda):
+        """
+        Selects and initializes the specified object tracker.
 
-    def _select_tracker(self, tracker, detector, use_cuda):
-        _tracker = self.trackers.get(str(tracker), None)
+        Args:
+            tracker_type (int): The type of object tracker.
+            object_detector: The object detection model used for detecting objects in images.
+            use_cuda (bool): Whether to use CUDA for GPU acceleration.
 
-        if _tracker is not None:
-            if _tracker is DeepSort:
-                return _tracker(detector, use_cuda=use_cuda)
+        Returns:
+            object: The initialized object tracker.
+        """
+        selected_tracker = self.available_trackers.get(str(tracker_type), None)
+
+        if selected_tracker is not None:
+            if selected_tracker is DeepSort:
+                return selected_tracker(object_detector, use_cuda=use_cuda)
             else:
-                return _tracker(detector)
+                return selected_tracker(object_detector)
         else:
-            raise ValueError(f'Invalid tracker: {tracker}')
+            raise ValueError(f'Invalid tracker type: {tracker_type}')
 
-    def detect_and_track(self, image, config: dict):
-        
-        return self.tracker.detect_and_track(image, config)
+    def detect_and_track(self, image, detection_config: dict):
+        """
+        Performs object detection and tracking on the input image.
+
+        Args:
+            image: The input image.
+            detection_config (dict): Configuration parameters for object detection.
+
+        Returns:
+            tuple: A tuple containing the detected bounding boxes, object IDs, and class IDs.
+        """
+        return self.tracker.detect_and_track(image, detection_config)
 
     def get_tracker(self):
+        """
+        Returns the initialized object tracker.
+
+        Returns:
+            object: The initialized object tracker.
+        """
         return self.tracker

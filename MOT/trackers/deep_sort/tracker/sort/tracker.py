@@ -69,11 +69,9 @@ class Tracker:
             A list of detections at the current time step.
 
         """
-        # Run matching cascade.
         matches, unmatched_tracks, unmatched_detections = \
             self._match(detections)
 
-        # Update track set.
         for track_idx, detection_idx in matches:
             self.tracks[track_idx].update(self.kf, detections[detection_idx])
         for track_idx in unmatched_tracks:
@@ -81,21 +79,13 @@ class Tracker:
         for detection_idx in unmatched_detections:
             self._initiate_track(detections[detection_idx])
         self.tracks = [t for t in self.tracks if not t.is_deleted()]
-        # print("LEN self.tracks", len(self.tracks))
-        # for t in self.tracks:
-        #     if not t.is_deleted():
-        #         print(t.__dict__)
-
-        # Update distance metric.
         active_targets = [t.track_id for t in self.tracks if t.is_confirmed()]
-        # print(active_targets)
         features, targets, oids = [], [], []
         for track in self.tracks:
             if not track.is_confirmed():
                 continue
             features += track.features
             targets += [track.track_id for _ in track.features]
-            # oids += track.oid
             track.features = []
         self.metric.partial_fit(
             np.asarray(features), np.asarray(targets), active_targets)
@@ -111,17 +101,14 @@ class Tracker:
                 detection_indices)
 
             return cost_matrix
-
-        # Split track set into confirmed and unconfirmed tracks.
+        
         confirmed_tracks = [
             i for i, t in enumerate(self.tracks) if t.is_confirmed()]
         unconfirmed_tracks = [
             i for i, t in enumerate(self.tracks) if not t.is_confirmed()]
-
-        # Associate confirmed tracks using appearance features.
+        
         matches_a, unmatched_tracks_a, unmatched_detections = linear_assignment.matching_cascade(gated_metric, self.metric.matching_threshold, self.max_age, self.tracks, detections, confirmed_tracks)
 
-        # Associate remaining tracks together with unconfirmed tracks using IOU.
         iou_track_candidates = unconfirmed_tracks + [
             k for k in unmatched_tracks_a if
             self.tracks[k].time_since_update == 1]
