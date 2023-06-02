@@ -3,6 +3,8 @@
 ## 🤖Overview
 This is a Tracking System application that performs object tracking in videos using YOLOv8 for detection and DeepSort algorithm for tracking. It allows you to upload a video file, select the tracking classes, and adjust the confidence threshold for object detection.
 
+![demo-gif](https://github.com/trgvy23/CinnamonBootcamp2023/blob/main/results.gif)
+
 ## 🔮Prerequisites
 
 - Python 3.6 or later
