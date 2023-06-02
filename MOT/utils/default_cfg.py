@@ -12,4 +12,5 @@ config = {
     "iou_thres" : 0.45,
     "max_det" : 1000,
     "agnostic_nms" : False,
+    "use_conda": False,
 }
