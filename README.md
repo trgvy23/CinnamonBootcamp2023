@@ -24,7 +24,7 @@ Cinnamon Bootcamp 2023
 - [🚀 Installation](#installation)
 - [💻 Usage](#-usage)
 - [⚙️ Project Structure](#%EF%B8%8F-project-structure)
-- [🙏 Acknowledgements](#-acknowledgements)
+- [🙏 Acknowledgements](#acknowledgements)
 
 ---
 
