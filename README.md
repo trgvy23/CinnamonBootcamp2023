@@ -24,7 +24,7 @@ Cinnamon Bootcamp 2023
 - [🚀 Installation](#installation)
 - [💻 Usage](#-usage)
 - [⚙️ Project Structure](#%EF%B8%8F-project-structure)
-- [🙏 Acknowledgments](#-acknowledgments)
+- [🙏 Acknowledgements](#-acknowledgements)
 
 ---
 
@@ -172,7 +172,7 @@ repo
 └──results.gif
 ```
 
-## 🙏 Acknowledgments
+## 🙏 Acknowledgements
 
 I would like to express my gratitude to the following open-source projects:
 
